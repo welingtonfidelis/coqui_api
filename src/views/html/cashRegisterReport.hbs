@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOCO - Cash Register Report</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-size: 60%;
+        }
+
+        html,
+        body,
+        #root {
+            height: 100vh;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1.1rem;
+        }
+
+        body {
+            padding: 4px;
+        }
+
+        header img {
+            max-width: 150px;
+            max-height: 70px;
+        }
+
+        header h3 {
+            margin: 5px 0;
+        }
+
+        header .row1 {
+            margin: 4px 0;
+        }
+
+        header .row2 span {
+            margin-right: 20px;
+        }
+
+        main {
+            margin-top: 15px;
+        }
+
+        main table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        main table td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        main table tr:nth-child(even) {
+            background-color: #e7e7e7;
+        }
+
+        footer {
+            margin-top: 10px;
+            float: right;
+        }
+
+        footer img {
+            margin-left: 10px;
+            width: 60px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="https://money-control.s3-sa-east-1.amazonaws.com/logos/report_logo.png" alt="Logo">
+
+        <div class="resume">
+            <h3>Relatório de {{dateStart}} à {{dateEnd}}</h3>
+            <div class="row1">
+                <span>Total em caixa: <strong>{{cashOnHand}}</strong></span>
+            </div>
+
+            <div class="row2">
+                <span>Receitas: <strong>{{revenue}}</strong></span>
+                <span>Despesas: <strong>{{expense}}</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Grupo</th>
+                <th>Valor</th>
+                <th>Data</th>
+            </tr>
+            {{#each reportList as |value key|}}
+                <tr>
+                    <td>{{value.type}}</td>
+                    <td>{{value.description}}</td>
+                    <td>{{value.cash_register_group_description}}</td>
+                    <td>{{value.value}}</td>
+                    <td>{{value.paid_in}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    </main>
+
+    <footer>
+        <span>{{today}}</span> - Powered by
+        <img src="https://money-control.s3-sa-east-1.amazonaws.com/logos/logo_transparent.png" alt="">
+    </footer>
+</body>
+
+</html>

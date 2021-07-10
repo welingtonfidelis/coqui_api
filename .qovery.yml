@@ -1,0 +1,16 @@
+---
+application:
+  name: "moco-api"
+  project: "moco-api"
+  organization: "QoveryCommunity"
+  port: 3001
+databases:
+- type: "POSTGRESQL"
+  name: "moco"
+  version: "11"
+routers:
+- name: "main-moco-api"
+  routes:
+  - application_name: "moco-api"
+    paths:
+    - "/*"
