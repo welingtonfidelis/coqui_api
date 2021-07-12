@@ -35,7 +35,7 @@ class AuthService {
       companyId: selectedUser.company_id,
       userRole: selectedUser.role,
     };
-    const token = this.createToken(contentToken, 10 * 60);
+    const token = this.createToken(contentToken, 10 * 60, JWTSECRET);
 
     const logedUser: UserLoginInterface = {
       token,
@@ -44,8 +44,16 @@ class AuthService {
     return logedUser;
   }
 
-  createToken(content: any, expiresMinutes: number) {
-    return jwt.sign(content, JWTSECRET, { expiresIn: `${expiresMinutes}m` });
+  createToken(content: any, expiresMinutes: number, secret: string): string {
+    return jwt.sign(content, secret, { expiresIn: `${expiresMinutes}m` });
+  }
+
+  verifyToken(token: string, secret: string): TokenInterface {
+    let verifiedToken: TokenInterface;
+
+    verifiedToken = (jwt.verify(token, secret)) as TokenInterface;
+
+    return verifiedToken;
   }
 }
 

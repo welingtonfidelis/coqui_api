@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { TokenInterface } from "../entities/Token";
 import { ROLES_ENUM } from "../enums/role";
+import { AuthService } from "../services/Auth";
 import { ResponseClientService } from "../services/ResponseClient";
 
 const responseClientService = new ResponseClientService();
+const authService = new AuthService();
 
 const authValidateMidleware = (
   req: Request,
@@ -29,7 +30,7 @@ const authValidateMidleware = (
   let verifiedToken = {};
 
   try {
-    verifiedToken = jwt.verify(token, jwtSecret);
+    verifiedToken = authService.verifyToken(token, jwtSecret);
   } catch (error) {
     const errorHandled = responseClientService.successResponse(
       {},
