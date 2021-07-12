@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
+import { CatchError } from "../decorators";
 import {
   CompanyDeleteInterface,
   CompanyFilterInterface,
@@ -12,103 +13,88 @@ const responseClientService = new ResponseClientService();
 const companyService = new CompanyService();
 
 class CompanyController {
-  async save(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data: CompanyInterface = req.body;
+  @CatchError()
+  async save(req: Request, res: Response) {
+    const data: CompanyInterface = req.body;
 
-      const savedCompany = await companyService.save(data);
-      const responseHandled = responseClientService.successResponse(savedCompany);
+    const savedCompany = await companyService.save(data);
+    const responseHandled = responseClientService.successResponse(savedCompany);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 
-  async list(req: Request, res: Response, next: NextFunction) {
-    try {
-      const page = parseInt(req.query?.page as string ?? '1');
-      const limit = parseInt(req.query?.limit as string ?? '15');
-      const name = req.query?.name as string;
-      const cnpj = req.query?.cnpj as string;
+  @CatchError()
+  async list(req: Request, res: Response) {
+    const page = parseInt((req.query?.page as string) ?? "1");
+    const limit = parseInt((req.query?.limit as string) ?? "15");
+    const name = req.query?.name as string;
+    const cnpj = req.query?.cnpj as string;
 
-      const filter: CompanyFilterInterface = {
-          page, limit, name, cnpj
-      }
-      const listCompanys = await companyService.list(filter);
-      const responseHandled = responseClientService.successResponse(listCompanys);
+    const filter: CompanyFilterInterface = {
+      page,
+      limit,
+      name,
+      cnpj,
+    };
+    const listCompanys = await companyService.list(filter);
+    const responseHandled = responseClientService.successResponse(listCompanys);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 
-  async show(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
+  @CatchError()
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
 
-      const selectedCompany = await companyService.show(id);
-      const responseHandled =
-        responseClientService.successResponse(selectedCompany);
+    const selectedCompany = await companyService.show(id);
+    const responseHandled =
+      responseClientService.successResponse(selectedCompany);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 
-  async changeStatus(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { status } = req.body;
-      const { id } = req.params;
+  @CatchError()
+  async changeStatus(req: Request, res: Response) {
+    const { status } = req.body;
+    const { id } = req.params;
 
-      const updatedCompany = await companyService.changeStatus(id, status);
-      const responseHandled =
-        responseClientService.successResponse(updatedCompany);
+    const updatedCompany = await companyService.changeStatus(id, status);
+    const responseHandled =
+      responseClientService.successResponse(updatedCompany);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 
-  async update(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { name, logo, cnpj, email, active } = req.body;
-      const { id } = req.params;
-      const data: CompanyUpdateInterface = {
-        id,
-        name,
-        logo,
-        cnpj,
-        email,
-        active,
-      };
+  @CatchError()
+  async update(req: Request, res: Response) {
+    const { name, logo, cnpj, email, active } = req.body;
+    const { id } = req.params;
+    const data: CompanyUpdateInterface = {
+      id,
+      name,
+      logo,
+      cnpj,
+      email,
+      active,
+    };
 
-      const updatedcompany = await companyService.update(data);
-      const responseHandled =
-        responseClientService.successResponse(updatedcompany);
+    const updatedcompany = await companyService.update(data);
+    const responseHandled =
+      responseClientService.successResponse(updatedcompany);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 
-  async delete(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const data: CompanyDeleteInterface = { id };
+  @CatchError()
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const data: CompanyDeleteInterface = { id };
 
-      const deletedcompany = await companyService.delete(data);
-      const responseHandled =
-        responseClientService.successResponse(deletedcompany);
+    const deletedcompany = await companyService.delete(data);
+    const responseHandled =
+      responseClientService.successResponse(deletedcompany);
 
-      return res.json(responseHandled);
-    } catch (error) {
-      next(error);
-    }
+    return res.json(responseHandled);
   }
 }
 

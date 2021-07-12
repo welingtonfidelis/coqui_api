@@ -16,6 +16,7 @@ export interface UserInterface {
 
 export interface UserLoginInterface {
   token: string;
+  role: string;
 }
 
 export interface UserListInterface {

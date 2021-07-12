@@ -24,6 +24,8 @@ const userRepository = new UserRepository();
 const authService = new AuthService();
 const mailService = new MailService();
 
+const JWTSECRET: string = process.env.SECRET!;
+
 class UserService {
   async save(data: UserInterface): Promise<UserCreatedInterface> {
     const userAlreadyExists = await userRepository.findOneByUserOrEmail(
@@ -62,7 +64,8 @@ class UserService {
 
     const token = authService.createToken(
       { userId: user.id, ongId: user.company_id },
-      15
+      15,
+      JWTSECRET
     );
 
     const htmlTemplatePath = resolve(
@@ -88,7 +91,9 @@ class UserService {
     return;
   }
 
-  async list(filter: UserFilterInterface): Promise<UserResponseClientInterface> {
+  async list(
+    filter: UserFilterInterface
+  ): Promise<UserResponseClientInterface> {
     const skip = filter.limit * (filter.page - 1);
     filter.page = skip;
 
@@ -102,10 +107,7 @@ class UserService {
     return listUserHandled;
   }
 
-  async show(
-    id: string,
-    ongId: string
-  ): Promise<UserProfileInterface | null> {
+  async show(id: string, ongId: string): Promise<UserProfileInterface | null> {
     const selectedUser = await userRepository.show(id, ongId);
 
     return selectedUser ? selectedUser.toProfileInterface() : null;

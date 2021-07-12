@@ -35,18 +35,18 @@ userRouter.get(
 );
 
 userRouter.get(
+  "/users/profile",
+  inputValidateMidleware(userShowProfileSchema),
+  userController.showProfile
+);
+
+userRouter.get(
   "/users/:id",
   [
     roleValidateMidleware(ROLES_ENUM.MANAGER),
     inputValidateMidleware(userShowSchema),
   ],
   userController.show
-);
-
-userRouter.get(
-  "/users/profile",
-  inputValidateMidleware(userShowProfileSchema),
-  userController.showProfile
 );
 
 userRouter.put(

@@ -39,6 +39,7 @@ class AuthService {
 
     const logedUser: UserLoginInterface = {
       token,
+      role: selectedUser.role
     };
 
     return logedUser;
