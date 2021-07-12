@@ -2,6 +2,7 @@ import Sequelize, { ENUM, Model } from "sequelize";
 import { sequelize } from "../database/connection";
 import {
   UserInterface,
+  UserListForChatInterface,
   UserListInterface,
   UserProfileInterface,
 } from "../entities/User";
@@ -16,6 +17,7 @@ class UserModel extends Model<UserInterface> {
   birth!: Date;
   password!: string;
   address!: string;
+  profile_image!: string;
   company_id!: string;
   active!: boolean;
   role!: string;
@@ -34,9 +36,18 @@ class UserModel extends Model<UserInterface> {
       user: this.user,
       birth: this.birth,
       address: this.address,
+      profile_image: this.profile_image,
       active: this.active,
       created_at: this.created_at,
       updated_at: this.updated_at,
+    };
+  }
+
+  toListForChatInterface(): UserListForChatInterface {
+    return {
+      id: this.id,
+      name: this.name,
+      profile_image: this.profile_image,
     };
   }
 
@@ -45,6 +56,7 @@ class UserModel extends Model<UserInterface> {
       name: this.name,
       email: this.email,
       address: this.address,
+      profile_image: this.profile_image,
       birth: this.birth,
       phone: this.phone,
       user: this.user,
@@ -87,6 +99,9 @@ UserModel.init(
       type: Sequelize.DATE,
     },
     address: {
+      type: Sequelize.STRING,
+    },
+    profile_image: {
       type: Sequelize.STRING,
     },
     active: {

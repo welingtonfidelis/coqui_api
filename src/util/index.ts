@@ -31,3 +31,32 @@ export const maskDate = (date: Date) => {
 export const removeHtmlFromText = (text: string) => {
   return text.replace(/<\/?[^>]+(>|$)/g, "");
 };
+
+export const randomNumber = (min: number, max: number) => {
+  return Math.floor(Math.random() * max) + min;
+};
+
+export const randomProfileImage = () => {
+  const images = [
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/andalusian-hound.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/beaver.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/cat.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/dog_1.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/dog_2.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/dog.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/elephant.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/fox+(1).png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/lion.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/octopus.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/owl.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/panda.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/parrot.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/penguin.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/rabbit.png",
+    "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/whale.png",
+  ];
+
+  const index = randomNumber(0, images.length);
+
+  return images[index];
+};

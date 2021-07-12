@@ -16,6 +16,7 @@ module.exports = {
         user: "admmaster",
         birth: "1990-07-28 00:00:00",
         password: bcrypt.hashSync("1234", 10),
+        profile_image: "https://conversa-aqui.s3.sa-east-1.amazonaws.com/user-images/dog.png",
         role: "admin",
         active: true,
         company_id: selectedOng[0].id,

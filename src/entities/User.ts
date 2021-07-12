@@ -7,6 +7,7 @@ export interface UserInterface {
   birth: Date;
   password: string;
   address?: string;
+  profile_image?: string;
   active: boolean;
   company_id: string;
   role?: string;
@@ -26,10 +27,17 @@ export interface UserListInterface {
   phone: string;
   user: string;
   birth: Date;
+  profile_image: string;
   address: string;
   active: boolean;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface UserListForChatInterface {
+  id: string;
+  name: string;
+  profile_image: string;
 }
 
 export interface UserCreatedInterface {
@@ -37,6 +45,7 @@ export interface UserCreatedInterface {
   user: string;
   email: string;
   password: string;
+  profile_image: string;
 }
 
 export interface UserUpdateInterface {
@@ -73,6 +82,7 @@ export interface UserProfileInterface {
   email: string;
   phone: string;
   birth: Date;
+  profile_image: string;
   address: string;
   active: boolean;
 }
@@ -94,6 +104,11 @@ export interface UserResponseClientInterface {
   count: number;
 }
 
+export interface UserForChatResponseClientInterface {
+  rows: UserListForChatInterface[];
+  count: number;
+}
+
 export interface UserFilterInterface {
   companyId: string;
   page: number;
@@ -101,4 +116,9 @@ export interface UserFilterInterface {
 
   name?: string;
   email?: string;
+}
+
+export interface UserForChatFilterInterface {
+  companyId: string;
+  userId: string;
 }

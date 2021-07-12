@@ -27,6 +27,9 @@ module.exports = {
           type: Sequelize.STRING,
           unique: true,
         },
+        profile_image: {
+          type: Sequelize.STRING,
+        },
         password: {
           allowNull: false,
           type: Sequelize.STRING,

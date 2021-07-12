@@ -3,6 +3,7 @@ import { UserService } from "../services/User";
 import { ResponseClientService } from "../services/ResponseClient";
 import {
   UserFilterInterface,
+  UserForChatFilterInterface,
   UserInterface,
   UserUpdateInterface,
   UserUpdatePasswordInterface,
@@ -27,7 +28,6 @@ class UserController {
     return res.json(responseHandled);
   }
 
-  // @CatchError()
   @CatchError()
   async list(req: Request, res: Response) {
     const page = parseInt((req.query?.page as string) ?? "1");
@@ -50,6 +50,20 @@ class UserController {
   }
 
   @CatchError()
+  async listForChat(req: Request, res: Response) {
+    const { userId, companyId } = req;
+    const filter: UserForChatFilterInterface = {
+      userId,
+      companyId,
+    };
+
+    const listUsers = await userService.listForChat(filter);
+    const responseHandled = responseClientService.successResponse(listUsers);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
   async show(req: Request, res: Response) {
     const { id } = req.params;
     const { companyId } = req;
@@ -60,7 +74,6 @@ class UserController {
     return res.json(responseHandled);
   }
 
-  @CatchError()
   @CatchError()
   async showProfile(req: Request, res: Response) {
     const { userId, companyId } = req;

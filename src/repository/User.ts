@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { UserModel } from "../models/User";
 import {
   UserFilterInterface,
+  UserForChatFilterInterface,
   UserInterface,
   UserUpdateInterface,
   UserUpdatePasswordInterface,
@@ -39,6 +40,16 @@ class UserRepository {
     return listUsers;
   }
 
+  async listForChat(filter: UserForChatFilterInterface) {
+    const { userId, companyId } = filter;
+
+    const listUsers = await UserModel.findAndCountAll({
+      where: { company_id: companyId, active: true, id: { [Op.not]: userId } },
+    });
+
+    return listUsers;
+  }
+
   async show(id: string, company_id: string) {
     const selectedUser = await UserModel.findOne({
       where: {
@@ -70,7 +81,7 @@ class UserRepository {
 
   async update(data: UserUpdateInterface) {
     const { id, company_id } = data;
-    
+
     const updatedUser = await UserModel.update(data, {
       where: { id, company_id },
     });

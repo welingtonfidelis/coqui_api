@@ -39,13 +39,14 @@ const socketServer = (httpServer: any) => {
 
       socket.join(companyId);
 
-      const message = {
-        room_id: companyId,
-        room_name: "geral",
-        userId,
-        total_online_users: companyRooms[companyId].totalOnlineUsers,
-      };
-      io.to(companyId).emit("online_user", message);     
+      io.to(companyId).emit("online_user", {
+        user_id: userId,
+        socket_id: socket.id
+      });
+
+      socket.emit("online_user_list", {
+        list: companyRooms[companyId].onlineUsers
+      });
 
     } catch (error) {
       console.log("\n\n error", error);
@@ -54,14 +55,9 @@ const socketServer = (httpServer: any) => {
     }
 
     socket.on("disconnect", () => {
-      console.log("disconnect", userId);
-
       socket.leave(companyId);
       io.to(companyId).emit("offline_user", {
-        room_id: companyId,
-        room_name: "geral",
-        userId,
-        total_online_users: companyRooms[companyId].totalOnlineUsers,
+        user_id: userId,
       });
 
       delete companyRooms[companyId].onlineUsers[userId];

@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import {
   UserCreatedInterface,
   UserFilterInterface,
+  UserForChatFilterInterface,
+  UserForChatResponseClientInterface,
   UserInterface,
   UserProfileInterface,
   UserResponseClientInterface,
@@ -18,7 +20,7 @@ import { AppError } from "../errors/AppError";
 import { UserRepository } from "../repository/User";
 import { AuthService } from "./Auth";
 import { MailService } from "./Mail";
-import { randomHash } from "../util";
+import { randomHash, randomProfileImage } from "../util";
 
 const userRepository = new UserRepository();
 const authService = new AuthService();
@@ -42,14 +44,16 @@ class UserService {
       throw new AppError(message, 400);
     }
 
-    const password = randomHash(8);
-    data.password = password;
+    data.password = randomHash(8);
+    data.profile_image = randomProfileImage();
+
     const savedUser = await userRepository.save(data);
     const savedUserHandled: UserCreatedInterface = {
       id: savedUser.id,
       user: data.user,
       email: data.email,
-      password: password,
+      password: data.password,
+      profile_image: data.profile_image
     };
 
     return savedUserHandled;
@@ -102,6 +106,17 @@ class UserService {
     const listUserHandled: UserResponseClientInterface = {
       count: listUsers.count,
       rows: listUsers.rows.map((item) => item.toListInterface()),
+    };
+
+    return listUserHandled;
+  }
+
+  async listForChat(filter: UserForChatFilterInterface): Promise<UserForChatResponseClientInterface> {
+    const listUsers = await userRepository.listForChat(filter);
+
+    const listUserHandled: UserForChatResponseClientInterface = {
+      count: listUsers.count,
+      rows: listUsers.rows.map((item) => item.toListForChatInterface()),
     };
 
     return listUserHandled;

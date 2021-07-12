@@ -4,6 +4,7 @@ import { ROLES_ENUM } from "../enums/role";
 import { roleValidateMidleware } from "../middlewares/Auth";
 import { inputValidateMidleware } from "../middlewares/InputValidate";
 import { userListSchema } from "../middlewares/InputValidate/schemas/user/list";
+import { userListForChatSchema } from "../middlewares/InputValidate/schemas/user/listForChat";
 import { userSaveSchema } from "../middlewares/InputValidate/schemas/user/save";
 import { userShowSchema } from "../middlewares/InputValidate/schemas/user/show";
 import { userShowProfileSchema } from "../middlewares/InputValidate/schemas/user/showProfile";
@@ -32,6 +33,12 @@ userRouter.get(
     inputValidateMidleware(userListSchema),
   ],
   userController.list
+);
+
+userRouter.get(
+  "/users/chat",
+    inputValidateMidleware(userListForChatSchema),
+  userController.listForChat
 );
 
 userRouter.get(
