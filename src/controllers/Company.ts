@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   CompanyDeleteInterface,
   CompanyFilterInterface,
@@ -12,7 +12,7 @@ const responseClientService = new ResponseClientService();
 const companyService = new CompanyService();
 
 class CompanyController {
-  async save(req: Request, res: Response) {
+  async save(req: Request, res: Response, next: NextFunction) {
     try {
       const data: CompanyInterface = req.body;
 
@@ -21,12 +21,11 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async list(req: Request, res: Response) {
+  async list(req: Request, res: Response, next: NextFunction) {
     try {
       const page = parseInt(req.query?.page as string ?? '1');
       const limit = parseInt(req.query?.limit as string ?? '15');
@@ -41,12 +40,11 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async show(req: Request, res: Response) {
+  async show(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -56,12 +54,11 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async changeStatus(req: Request, res: Response) {
+  async changeStatus(req: Request, res: Response, next: NextFunction) {
     try {
       const { status } = req.body;
       const { id } = req.params;
@@ -72,12 +69,11 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, logo, cnpj, email, active } = req.body;
       const { id } = req.params;
@@ -96,12 +92,11 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const data: CompanyDeleteInterface = { id };
@@ -112,8 +107,7 @@ class CompanyController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 }

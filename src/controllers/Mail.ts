@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { SendMailInterface } from "../entities/Mail";
 import { MailService } from "../services/Mail";
 import { ResponseClientService } from "../services/ResponseClient";
@@ -12,7 +12,7 @@ const mailService = new MailService();
 const CONTACT_MAIL = process.env.CONTACT_MAIL!;
 
 class MailController {
-  async resetUserPassword(req: Request, res: Response) {
+  async resetUserPassword(req: Request, res: Response, next: NextFunction) {
     try {
       const { email } = req.body;
 
@@ -21,12 +21,11 @@ class MailController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async fisrtContact(req: Request, res: Response) {
+  async fisrtContact(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, email, message } = req.body;
 
@@ -42,8 +41,7 @@ class MailController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 }

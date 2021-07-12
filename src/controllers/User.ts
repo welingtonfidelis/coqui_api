@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/User";
 import { ResponseClientService } from "../services/ResponseClient";
 import {
@@ -14,7 +14,7 @@ const responseClientService = new ResponseClientService();
 const userService = new UserService();
 
 class UserController {
-  async save(req: Request, res: Response) {
+  async save(req: Request, res: Response, next: NextFunction) {
     try {
       const data: UserInterface = req.body;
       const { companyId } = req;
@@ -25,12 +25,12 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async list(req: Request, res: Response) {
+  // @CatchError()
+  async list(req: Request, res: Response, next: NextFunction) {
     try {
       const page = parseInt((req.query?.page as string) ?? "1");
       const limit = parseInt((req.query?.limit as string) ?? "15");
@@ -50,12 +50,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async show(req: Request, res: Response) {
+  async show(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const { companyId } = req;
@@ -66,12 +65,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async showProfile(req: Request, res: Response) {
+  async showProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId, companyId } = req;
 
@@ -81,12 +79,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { 
         name, address, birth, phone, 
@@ -113,12 +110,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async updateStatus(req: Request, res: Response) {
+  async updateStatus(req: Request, res: Response, next: NextFunction) {
     try {
       const { status } = req.body;
       const { id } = req.params;
@@ -135,12 +131,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async updateProfile(req: Request, res: Response) {
+  async updateProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, phone, birth, address, active } = req.body;
       const { userId, companyId } = req;
@@ -160,12 +155,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async updateResetedPassword(req: Request, res: Response) {
+  async updateResetedPassword(req: Request, res: Response, next: NextFunction) {
     try {
       const { new_password } = req.body;
       const { userId, companyId } = req;
@@ -181,12 +175,11 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
   }
 
-  async updatePassword(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response, next: NextFunction) {
     try {
       const { old_password, new_password } = req.body;
       const { userId, companyId } = req;
@@ -203,9 +196,22 @@ class UserController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
+      next(error);
     }
+  }
+}
+
+function CatchError(): any {
+  return (_: object, __: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
+    const orignalValue = descriptor.value;
+    descriptor.value = async function(...args: any[]): Promise<any> {
+      try {
+        return await orignalValue.apply(this, args);
+      } catch (error) {
+        console.log('\n\n\n ERROR ===> ', error);
+      }
+    }
+    return descriptor;
   }
 }
 

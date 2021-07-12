@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/Auth";
 import { ResponseClientService } from "../services/ResponseClient";
 
@@ -6,8 +6,8 @@ const responseClientService = new ResponseClientService();
 const authService = new AuthService();
 
 class AuthController {
-  async login(req: Request, res: Response) {
-    try {
+  async login(req: Request, res: Response, next: NextFunction) {
+   try {
       const { user, password } = req.body;
       const selectedUser = await authService.login(user, password);
 
@@ -16,9 +16,8 @@ class AuthController {
 
       return res.json(responseHandled);
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
-      return res.status(errorHandled.status_code).json(errorHandled);
-    }
+     next(error);
+   }
   }
 }
 
