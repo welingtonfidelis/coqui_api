@@ -54,6 +54,16 @@ const socketServer = (httpServer: any) => {
       socket.disconnect();
     }
 
+    socket.on("send_mesage_to_user", data => {
+      const { to_user_id } = data;
+      const receiver = companyRooms[companyId].onlineUsers[to_user_id];
+
+      if(receiver) {
+        socket.to(receiver).emit("receive_message_from_user", { ...data, from_user_id: userId });
+        socket.emit("receive_message_from_user", { ...data, from_user_id: userId });
+      }
+    })
+
     socket.on("disconnect", () => {
       socket.leave(companyId);
       io.to(companyId).emit("offline_user", {

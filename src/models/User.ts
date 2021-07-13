@@ -53,6 +53,7 @@ class UserModel extends Model<UserInterface> {
 
   toProfileInterface(): UserProfileInterface {
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       address: this.address,

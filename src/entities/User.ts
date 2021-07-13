@@ -16,6 +16,7 @@ export interface UserInterface {
 }
 
 export interface UserLoginInterface {
+  id: string;
   token: string;
   role: string;
 }
@@ -77,6 +78,7 @@ export interface UserUpdateProfileInterface {
 }
 
 export interface UserProfileInterface {
+  id: string;
   name: string;
   user: string;
   email: string;

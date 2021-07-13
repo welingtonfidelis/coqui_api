@@ -38,6 +38,7 @@ class AuthService {
     const token = this.createToken(contentToken, 10 * 60, JWTSECRET);
 
     const logedUser: UserLoginInterface = {
+      id: selectedUser.id,
       token,
       role: selectedUser.role
     };
