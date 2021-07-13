@@ -44,7 +44,8 @@ class UserService {
       throw new AppError(message, 400);
     }
 
-    data.password = randomHash(8);
+    const password = randomHash(8);
+    data.password = password;
     data.profile_image = randomProfileImage();
 
     const savedUser = await userRepository.save(data);
@@ -52,7 +53,7 @@ class UserService {
       id: savedUser.id,
       user: data.user,
       email: data.email,
-      password: data.password,
+      password: password,
       profile_image: data.profile_image
     };
 
