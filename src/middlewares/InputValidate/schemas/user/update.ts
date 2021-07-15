@@ -9,6 +9,7 @@ const userUpdateSchema = Joi.object({
   birth: Joi.date().required(),
   address: Joi.string().allow("").allow(null),
   active: Joi.boolean().required(),
+  role: Joi.string().valid('admin', 'manager', 'user').required()
 });
 
 export { userUpdateSchema };

@@ -31,6 +31,7 @@ export interface UserListInterface {
   profile_image: string;
   address: string;
   active: boolean;
+  role: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -59,6 +60,7 @@ export interface UserUpdateInterface {
   address: string;
   active: boolean;
   company_id: string;
+  role: string;
 }
 
 export interface UserUpdateStatusInterface {
@@ -87,6 +89,7 @@ export interface UserProfileInterface {
   profile_image: string;
   address: string;
   active: boolean;
+  role: string;
 }
 
 export interface UserUpdatePasswordInterface {

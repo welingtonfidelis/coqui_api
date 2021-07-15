@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import bcrypt from "bcryptjs";
 import { UserModel } from "../models/User";
 import {
+  UserDeleteInterface,
   UserFilterInterface,
   UserForChatFilterInterface,
   UserInterface,
@@ -123,6 +124,15 @@ class UserRepository {
     );
 
     return updatedUser;
+  }
+
+  async delete(data: UserDeleteInterface) {
+    const { id, company_id } = data;
+    const deletedUser = await UserModel.destroy({
+      where: { id, company_id },
+    });
+
+    return deletedUser;
   }
 }
 

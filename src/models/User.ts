@@ -38,6 +38,7 @@ class UserModel extends Model<UserInterface> {
       address: this.address,
       profile_image: this.profile_image,
       active: this.active,
+      role:  this.role,
       created_at: this.created_at,
       updated_at: this.updated_at,
     };
@@ -62,6 +63,7 @@ class UserModel extends Model<UserInterface> {
       phone: this.phone,
       user: this.user,
       active: this.active,
+      role: this.role
     };
   }
 }

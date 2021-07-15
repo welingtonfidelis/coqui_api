@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UserService } from "../services/User";
 import { ResponseClientService } from "../services/ResponseClient";
 import {
+  UserDeleteInterface,
   UserFilterInterface,
   UserForChatFilterInterface,
   UserInterface,
@@ -86,7 +87,7 @@ class UserController {
 
   @CatchError()
   async update(req: Request, res: Response) {
-    const { name, address, birth, phone, user, email, active } = req.body;
+    const { name, address, birth, phone, user, email, active, role } = req.body;
     const { id } = req.params;
     const { companyId } = req;
 
@@ -100,6 +101,7 @@ class UserController {
       user,
       email,
       active,
+      role,
     };
 
     const updateduser = await userService.update(data);
@@ -174,6 +176,18 @@ class UserController {
 
     const updatedUser = await userService.updatePassword(data);
     const responseHandled = responseClientService.successResponse(updatedUser);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const { companyId } = req;
+    const data: UserDeleteInterface = { id, company_id: companyId };
+
+    const deletedUser = await userService.delete(data);
+    const responseHandled = responseClientService.successResponse(deletedUser);
 
     return res.json(responseHandled);
   }

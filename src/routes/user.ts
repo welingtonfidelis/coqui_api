@@ -3,6 +3,7 @@ import { UserController } from "../controllers/User";
 import { ROLES_ENUM } from "../enums/role";
 import { roleValidateMidleware } from "../middlewares/Auth";
 import { inputValidateMidleware } from "../middlewares/InputValidate";
+import { userDeleteSchema } from "../middlewares/InputValidate/schemas/user/delete";
 import { userListSchema } from "../middlewares/InputValidate/schemas/user/list";
 import { userListForChatSchema } from "../middlewares/InputValidate/schemas/user/listForChat";
 import { userSaveSchema } from "../middlewares/InputValidate/schemas/user/save";
@@ -87,6 +88,12 @@ userRouter.patch(
   "/users/profile/update-reseted-password",
   inputValidateMidleware(userUpdateResetedPasswordSchema),
   userController.updateResetedPassword
+);
+
+userRouter.delete(
+  "/users/:id",
+  inputValidateMidleware(userDeleteSchema),
+  userController.delete
 );
 
 export { userRouter };

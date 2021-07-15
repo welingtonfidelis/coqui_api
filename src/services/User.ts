@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import {
   UserCreatedInterface,
+  UserDeleteInterface,
   UserFilterInterface,
   UserForChatFilterInterface,
   UserForChatResponseClientInterface,
@@ -172,6 +173,12 @@ class UserService {
     const [updatedUser] = await userRepository.updatePassword(data);
 
     return updatedUser > 0;
+  }
+
+  async delete(data: UserDeleteInterface): Promise<boolean> {
+    const deletedUser = await userRepository.delete(data);
+
+    return deletedUser > 0;
   }
 }
 
