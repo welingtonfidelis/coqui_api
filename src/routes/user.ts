@@ -48,42 +48,57 @@ userRouter.patch(
   userController.updateResetedPassword
 );
 
-// ONLY MANAGER OR ADMIN
-userRouter.use(roleValidateMidleware(ROLES_ENUM.MANAGER));
-
 userRouter.post(
   "/users",
-  inputValidateMidleware(userSaveSchema),
+  [
+    inputValidateMidleware(userSaveSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.save
 );
 
 userRouter.get(
   "/users",
-  inputValidateMidleware(userListSchema),
+  [
+    inputValidateMidleware(userListSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.list
 );
 
 userRouter.get(
   "/users/:id",
-  inputValidateMidleware(userShowSchema),
+  [
+    inputValidateMidleware(userShowSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.show
 );
 
 userRouter.put(
   "/users/:id",
-  inputValidateMidleware(userUpdateSchema),
+  [
+    inputValidateMidleware(userUpdateSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.update
 );
 
 userRouter.patch(
   "/users/:id/status",
-  inputValidateMidleware(userUpdateStatusSchema),
+  [
+    inputValidateMidleware(userUpdateStatusSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.updateStatus
 );
 
 userRouter.delete(
   "/users/:id",
-  inputValidateMidleware(userDeleteSchema),
+  [
+    inputValidateMidleware(userDeleteSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   userController.delete
 );
 

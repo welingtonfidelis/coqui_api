@@ -18,36 +18,48 @@ newsRouter.get(
   newsController.unexpiredList
 );
 
-// ONLY MANAGER OR ADMIN
-newsRouter.use(roleValidateMidleware(ROLES_ENUM.MANAGER));
-
 newsRouter.get(
   "/news",
-  inputValidateMidleware(newsListSchema),
+  [
+    inputValidateMidleware(newsListSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   newsController.list
 );
 
 newsRouter.post(
   "/news",
-  inputValidateMidleware(newsSaveSchema),
+  [
+    inputValidateMidleware(newsSaveSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   newsController.save
 );
 
 newsRouter.get(
   "/news/:id",
-  inputValidateMidleware(newsShowSchema),
+  [
+    inputValidateMidleware(newsShowSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   newsController.show
 );
 
 newsRouter.put(
   "/news/:id",
-  inputValidateMidleware(newsUpdateSchema),
+  [
+    inputValidateMidleware(newsUpdateSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   newsController.update
 );
 
 newsRouter.delete(
   "/news/:id",
-  inputValidateMidleware(newsDeleteSchema),
+  [
+    inputValidateMidleware(newsDeleteSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
   newsController.delete
 );
 
