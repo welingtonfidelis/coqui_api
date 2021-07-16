@@ -18,27 +18,9 @@ import { userUpdateStatusSchema } from "../middlewares/InputValidate/schemas/use
 const userRouter = Router();
 const userController = new UserController();
 
-userRouter.post(
-  "/users",
-  [
-    inputValidateMidleware(userSaveSchema),
-    roleValidateMidleware(ROLES_ENUM.MANAGER),
-  ],
-  userController.save
-);
-
-userRouter.get(
-  "/users",
-  [
-    roleValidateMidleware(ROLES_ENUM.MANAGER),
-    inputValidateMidleware(userListSchema),
-  ],
-  userController.list
-);
-
 userRouter.get(
   "/users/chat",
-    inputValidateMidleware(userListForChatSchema),
+  inputValidateMidleware(userListForChatSchema),
   userController.listForChat
 );
 
@@ -46,30 +28,6 @@ userRouter.get(
   "/users/profile",
   inputValidateMidleware(userShowProfileSchema),
   userController.showProfile
-);
-
-userRouter.get(
-  "/users/:id",
-  [
-    roleValidateMidleware(ROLES_ENUM.MANAGER),
-    inputValidateMidleware(userShowSchema),
-  ],
-  userController.show
-);
-
-userRouter.put(
-  "/users/:id",
-  [
-    roleValidateMidleware(ROLES_ENUM.MANAGER),
-    inputValidateMidleware(userUpdateSchema),
-  ],
-  userController.update
-);
-
-userRouter.patch(
-  "/users/:id/status",
-  inputValidateMidleware(userUpdateStatusSchema),
-  userController.updateStatus
 );
 
 userRouter.patch(
@@ -88,6 +46,39 @@ userRouter.patch(
   "/users/profile/update-reseted-password",
   inputValidateMidleware(userUpdateResetedPasswordSchema),
   userController.updateResetedPassword
+);
+
+// ONLY MANAGER OR ADMIN
+userRouter.use(roleValidateMidleware(ROLES_ENUM.MANAGER));
+
+userRouter.post(
+  "/users",
+  inputValidateMidleware(userSaveSchema),
+  userController.save
+);
+
+userRouter.get(
+  "/users",
+  inputValidateMidleware(userListSchema),
+  userController.list
+);
+
+userRouter.get(
+  "/users/:id",
+  inputValidateMidleware(userShowSchema),
+  userController.show
+);
+
+userRouter.put(
+  "/users/:id",
+  inputValidateMidleware(userUpdateSchema),
+  userController.update
+);
+
+userRouter.patch(
+  "/users/:id/status",
+  inputValidateMidleware(userUpdateStatusSchema),
+  userController.updateStatus
 );
 
 userRouter.delete(

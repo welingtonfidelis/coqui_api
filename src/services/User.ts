@@ -125,8 +125,8 @@ class UserService {
     return listUserHandled;
   }
 
-  async show(id: string, ongId: string): Promise<UserProfileInterface | null> {
-    const selectedUser = await userRepository.show(id, ongId);
+  async show(id: string, companyId: string): Promise<UserProfileInterface | null> {
+    const selectedUser = await userRepository.show(id, companyId);
 
     return selectedUser ? selectedUser.toProfileInterface() : null;
   }
