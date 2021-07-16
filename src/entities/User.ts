@@ -45,6 +45,7 @@ export interface UserListForChatInterface {
 export interface UserCreatedInterface {
   id: string;
   user: string;
+  name: string;
   email: string;
   password: string;
   profile_image: string;

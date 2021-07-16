@@ -8,6 +8,7 @@ const userSaveSchema = Joi.object({
   birth: Joi.date().required(),
   address: Joi.string().allow("").allow(null),
   active: Joi.boolean().required(),
+  role: Joi.string()
 });
 
 export { userSaveSchema };

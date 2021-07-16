@@ -53,6 +53,7 @@ class UserService {
     const savedUserHandled: UserCreatedInterface = {
       id: savedUser.id,
       user: data.user,
+      name: savedUser.name,
       email: data.email,
       password: password,
       profile_image: data.profile_image

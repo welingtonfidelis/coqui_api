@@ -41,28 +41,44 @@ const socketServer = (httpServer: any) => {
 
       io.to(companyId).emit("online_user", {
         user_id: userId,
-        socket_id: socket.id
+        socket_id: socket.id,
       });
 
       socket.emit("online_user_list", {
-        list: companyRooms[companyId].onlineUsers
+        list: companyRooms[companyId].onlineUsers,
       });
-
     } catch (error) {
       console.log("\n\n error", error);
 
       socket.disconnect();
     }
 
-    socket.on("send_mesage_to_user", data => {
+    socket.on("send_mesage_to_user", (data) => {
       const { to_user_id } = data;
       const receiver = companyRooms[companyId].onlineUsers[to_user_id];
 
-      if(receiver) {
-        socket.to(receiver).emit("receive_message_from_user", { ...data, from_user_id: userId });
-        socket.emit("receive_message_from_user", { ...data, from_user_id: userId });
+      if (receiver) {
+        socket
+          .to(receiver)
+          .emit("receive_message_from_user", { ...data, from_user_id: userId });
+        socket.emit("receive_message_from_user", {
+          ...data,
+          from_user_id: userId,
+        });
       }
-    })
+    });
+
+    socket.on("new_user", (data) => {
+      io.to(companyId).emit("new_user", data);
+    });
+
+    socket.on("deleted_user", (data) => {
+      const { id } = data;
+
+      io.to(companyId).emit("deleted_user", {
+        id,
+      });
+    });
 
     socket.on("disconnect", () => {
       socket.leave(companyId);
