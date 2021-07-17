@@ -61,11 +61,12 @@ const socketServer = (httpServer: any) => {
         socket
           .to(receiver)
           .emit("receive_message_from_user", { ...data, from_user_id: userId });
-        socket.emit("receive_message_from_user", {
-          ...data,
-          from_user_id: userId,
-        });
       }
+
+      socket.emit("receive_message_from_user", {
+        ...data,
+        from_user_id: userId,
+      });
     });
 
     socket.on("new_user", (data) => {
