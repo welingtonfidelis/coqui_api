@@ -3,11 +3,13 @@ import express from "express";
 import cors from "cors";
 import { resolve } from "path";
 import { errorHandleMidleware } from "./middlewares/ErrorHandle";
+import { router } from "./routes";
+import mongoConnection from "./database/mongoConnection";
 
 const enviromentPath = resolve(__dirname, "enviroments", ".env");
 dotenv.config({ path: enviromentPath });
 
-import { router } from "./routes";
+mongoConnection();
 
 const app = express();
 

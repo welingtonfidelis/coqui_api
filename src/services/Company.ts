@@ -43,6 +43,7 @@ class CompanyService {
       birth: new Date(),
       password: starterUserPassword,
       company_id: savedCompany.id,
+      role: "manager",
       active: true,
     };
     const savedUser = await userRepository.save(starterCompanyUser);

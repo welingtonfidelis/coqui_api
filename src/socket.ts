@@ -1,10 +1,14 @@
 import { Server, Socket } from "socket.io";
 import { AuthService } from "./services/Auth";
+import { ConversationService } from "./services/Conversation";
+import { MessageService } from "./services/Message";
 
 const authService = new AuthService();
 const JWTSECRET: string = process.env.SECRET!;
 
 const companyRooms: any = {};
+const messageService = new MessageService();
+const conversationService = new ConversationService();
 
 const socketServer = (httpServer: any) => {
   const io = new Server(httpServer, {
@@ -53,8 +57,8 @@ const socketServer = (httpServer: any) => {
       socket.disconnect();
     }
 
-    socket.on("send_mesage_to_user", (data) => {
-      const { to_user_id } = data;
+    socket.on("send_mesage_to_user", async (data) => {
+      const { conversation_id, to_user_id, text, sent_time } = data;
       const receiver = companyRooms[companyId].onlineUsers[to_user_id];
 
       if (receiver) {
@@ -67,6 +71,30 @@ const socketServer = (httpServer: any) => {
         ...data,
         from_user_id: userId,
       });
+
+      try {
+        let conversationId = conversation_id;
+        if (!conversationId) {
+          const { id } = await conversationService.findByUserIdAUserIdBOrSave({
+            company_id: companyId,
+            user_id_a: userId,
+            user_id_b: to_user_id,
+          });
+
+          conversationId = id;
+        }
+
+        await messageService.save({
+          conversation_id: conversationId,
+          company_id: companyId,
+          to_user_id,
+          from_user_id: userId,
+          text,
+          sent_time,
+        });
+      } catch (error) {
+        console.log("ERROR SAVING MESSAGE", error);
+      }
     });
 
     socket.on("new_user", (data) => {
