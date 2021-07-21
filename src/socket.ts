@@ -71,18 +71,27 @@ const socketServer = (httpServer: any) => {
         ...data,
         from_user_id: userId,
       });
-
+      
       try {
         let conversationId = conversation_id;
         if (!conversationId) {
-          const { id } = await conversationService.findByUserIdAUserIdBOrSave({
+          const { id, created_at } = await conversationService.findByUserIdAUserIdBOrSave({
             company_id: companyId,
             user_id_a: userId,
             user_id_b: to_user_id,
           });
+          
+          socket.emit("new_conversation", {
+            id,
+            company_id: companyId,
+            user_id_a: userId,
+            user_id_b: to_user_id,
+            created_at
+          });
 
           conversationId = id;
         }
+
 
         await messageService.save({
           conversation_id: conversationId,
