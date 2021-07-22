@@ -12,8 +12,8 @@ class MessageController {
   async listByConversation(req: Request, res: Response) {
     const page = parseInt((req.query?.page as string) ?? "1");
     const limit = parseInt((req.query?.limit as string) ?? "20");
-    const conversation_id = req.query.conversation_id as string;
-    const { userId, companyId } = req;
+    const { id: conversation_id } = req.params;
+    const { companyId } = req;
 
     const filter: MessageByConversationFilterInterface = {
       conversation_id,

@@ -48,7 +48,7 @@ class ConversationService {
   async listWithMessagesByUser(
     filter: ConversationFilterInterface
   ): Promise<ConversationWithMessageResponseClientInterface> {
-    const { limit, page, company_id } = filter;
+    const { limit, page, message_page, message_limit, company_id } = filter;
 
     if (limit && page) {
       const skip = limit * (page - 1);
@@ -64,11 +64,11 @@ class ConversationService {
 
     for (let i = 0; i < listData.rows.length; i += 1) {
       const item = listData.rows[i]
-      const { rows } = await messageRepository.listByConversation({
+      const { rows, count } = await messageRepository.listByConversation({
         company_id,
         conversation_id: item.id,
-        limit: 10,
-        page: 0,
+        limit: message_limit,
+        page: (message_limit * (message_page - 1)),
       });
 
       treatedData.rows.push({
@@ -76,7 +76,9 @@ class ConversationService {
         user_id_a: item.user_id_a,
         user_id_b: item.user_id_b,
         created_at: item.created_at,
-        messages: rows.map(message => ({
+        messages: {
+          count,
+          rows: rows.map(message => ({
           id: message.id,
           conversation_id: message.conversation_id,
           from_user_id: message.from_user_id,
@@ -84,7 +86,8 @@ class ConversationService {
           text: message.text,
           sent_time: message.sent_time,
           created_at: message.created_at,
-        })),
+        }))
+      },
       });
     }
 

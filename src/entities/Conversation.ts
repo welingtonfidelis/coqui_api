@@ -28,7 +28,10 @@ export interface ConversationWithMessagesListInterface {
   user_id_a: string;
   user_id_b: string;
   created_at: Date;
-  messages: MessageListInterface[];
+  messages: {
+    count: number,
+    rows: MessageListInterface[]
+  };
 }
 
 export interface ConversationResponseClientInterface {
@@ -46,6 +49,8 @@ export interface ConversationFilterInterface {
   user_id: string;
   page?: number;
   limit?: number;
+  message_page: number;
+  message_limit: number;
 }
 
 export interface ConversationByUserIdAUserIdB {

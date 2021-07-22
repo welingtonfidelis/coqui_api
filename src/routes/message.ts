@@ -7,7 +7,7 @@ const messageRouter = Router();
 const messageController = new MessageController();
 
 messageRouter.get(
-  "/messages/by-conversation",
+  "/messages/by-conversation/:id",
   inputValidateMidleware(messageListByConversationSchema),
   messageController.listByConversation
 );

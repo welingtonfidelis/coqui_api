@@ -29,10 +29,10 @@ class MessageRepository {
       },
       null,
       { skip: page, limit }
-    ).sort({ ["sent_time"]: 1 });
+    ).sort({ ["sent_time"]: -1 });
 
     return {
-      rows, count
+      rows: rows.reverse(), count
     }
   }
 }

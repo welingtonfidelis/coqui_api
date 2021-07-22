@@ -12,6 +12,8 @@ class ConversationController {
   async listByToken(req: Request, res: Response) {
     const page = parseInt((req.query?.page as string));
     const limit = parseInt((req.query?.limit as string));
+    const message_page = parseInt((req.query?.message_page as string) ?? "1");
+    const message_limit = parseInt((req.query?.message_limit as string) ?? "10");
     const { userId, companyId } = req;
 
     const filter: ConversationFilterInterface = {
@@ -19,6 +21,8 @@ class ConversationController {
       user_id: userId,
       page,
       limit,
+      message_page,
+      message_limit,
     };
     const listData = await conversationService.listWithMessagesByUser(filter);
     const responseHandled = responseClientService.successResponse(listData);
