@@ -30,7 +30,7 @@ class MailController {
     const data: SendMailInterface = {
       to: CONTACT_MAIL,
       from: email,
-      subject: `MOCO - Primeiro Contato de ${name}`,
+      subject: `COQUI - Primeiro Contato de ${name}`,
       message: removeHtmlFromText(message),
     };
 

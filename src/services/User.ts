@@ -70,7 +70,7 @@ class UserService {
     }
 
     const token = authService.createToken(
-      { userId: user.id, ongId: user.company_id },
+      { userId: user.id, companyId: user.company_id },
       15,
       JWTSECRET
     );
