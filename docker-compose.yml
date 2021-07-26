@@ -42,44 +42,42 @@ services:
                 reservations:
                     memory: 256M
 
-        db-mongo:
-            image: mongo
-            restart: always
-            container_name: mongo_db
-            environment: 
-                MONGO_INITDB_ROOT_USERNAME: root
-                MONGO_INITDB_ROOT_PASSWORD: root
-            ports:
-                - '27017:27017'
-            volumes:
-                - docker_data:/data/mongodb
-            networks:   
-                compose-networks:
-                    ipv4_address: 172.28.1.4
-            deploy:
-                resources:
-                    limits:
-                        memory: 100M
-                    reservations:
-                        memory: 20M
-    
-        db-nosqlclient:
-            image: mongoclient/mongoclient
-            restart: always
-            container_name: mongoclient
-            ports:
-                - '27018:3000'
-            depends_on:
-                - db-mongo
-            networks:   
-                compose-networks:
-                    ipv4_address: 172.28.1.5
-            deploy:
-                resources:
-                    limits:
-                        memory: 100M
-                    reservations:
-                        memory: 20M
+    db-mongo:
+        image: mongo
+        restart: always
+        container_name: mongo_db
+        environment: 
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        ports:
+            - '27017:27017'
+        networks:   
+            coqui-networks:
+                ipv4_address: 172.28.1.4
+        deploy:
+            resources:
+                limits:
+                    memory: 100M
+                reservations:
+                    memory: 20M
+
+    db-nosqlclient:
+        image: mongoclient/mongoclient
+        restart: always
+        container_name: mongoclient
+        ports:
+            - '27018:3000'
+        depends_on:
+            - db-mongo
+        networks:   
+            coqui-networks:
+                ipv4_address: 172.28.1.5
+        deploy:
+            resources:
+                limits:
+                    memory: 100M
+                reservations:
+                    memory: 20M
 
     server:
         container_name: coqui_api
