@@ -11,6 +11,7 @@ import { UserInterface } from "../entities/User";
 import { CompanyRepository } from "../repository/Company";
 import { UserRepository } from "../repository/User";
 import { AppError } from "../errors/AppError";
+import { ROLES_ENUM } from "../enums/role";
 
 const companyRepository = new CompanyRepository();
 const userRepository = new UserRepository();
@@ -43,7 +44,7 @@ class CompanyService {
       birth: new Date(),
       password: starterUserPassword,
       company_id: savedCompany.id,
-      role: "manager",
+      role: ROLES_ENUM.MANAGER,
       active: true,
     };
     const savedUser = await userRepository.save(starterCompanyUser);
