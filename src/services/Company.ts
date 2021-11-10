@@ -62,7 +62,9 @@ class CompanyService {
     return savedCompanyHandled;
   }
 
-  async list(filter: CompanyFilterInterface): Promise<CompanyResponseClientInterface> {
+  async list(
+    filter: CompanyFilterInterface
+  ): Promise<CompanyResponseClientInterface> {
     const skip = filter.limit * (filter.page - 1);
     filter.page = skip;
 
@@ -76,12 +78,28 @@ class CompanyService {
     return listCompanyHandled;
   }
 
-  async show(
-    id: string,
-  ): Promise<CompanyInterface | null> {
-    const selectedUser = await companyRepository.show(id);
+  async find(id: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.find(id);
 
-    return selectedUser ? selectedUser : null;
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
+  }
+
+  async findByEmail(email: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByEmail(email);
+
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
+  }
+
+  async findByCnpj(cnpj: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByCnpj(cnpj);
+
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
   }
 
   async changeStatus(id: string, status: boolean): Promise<boolean> {

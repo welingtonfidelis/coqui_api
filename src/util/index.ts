@@ -8,7 +8,8 @@ export const randomHash = (maxLength = 8) => {
 };
 
 export const removeSpecialCharacters = (word: string) => {
-  const wordHandled = word.replace(/[^\w\s]/gi, "");
+  let wordHandled = word.replace(/[^\w\s]/gi, "");
+  wordHandled = wordHandled.replace(/_/g, "");
 
   return wordHandled;
 };

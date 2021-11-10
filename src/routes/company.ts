@@ -4,9 +4,11 @@ import { inputValidateMidleware } from "../middlewares/InputValidate";
 import { companyDeleteSchema } from "../middlewares/InputValidate/schemas/company/delete";
 import { companyListSchema } from "../middlewares/InputValidate/schemas/company/list";
 import { companySaveSchema } from "../middlewares/InputValidate/schemas/company/save";
-import { companyShowSchema } from "../middlewares/InputValidate/schemas/company/show";
+import { companyFindSchema } from "../middlewares/InputValidate/schemas/company/find";
 import { companyUpdateSchema } from "../middlewares/InputValidate/schemas/company/update";
 import { companyUpdateStatusSchema } from "../middlewares/InputValidate/schemas/company/updateStatus";
+import { companyFindByEmailSchema } from "../middlewares/InputValidate/schemas/company/findByEmail";
+import { companyFindByCnpjSchema } from "../middlewares/InputValidate/schemas/company/findByCnpj";
 
 const companyRouter = Router();
 const companyController = new CompanyController();
@@ -25,8 +27,20 @@ companyRouter.get(
 
 companyRouter.get(
   "/companies/:id",
-  inputValidateMidleware(companyShowSchema),
-  companyController.show
+  inputValidateMidleware(companyFindSchema),
+  companyController.find
+);
+
+companyRouter.get(
+  "/companies/email/:email",
+  inputValidateMidleware(companyFindByEmailSchema),
+  companyController.findByEmail
+);
+
+companyRouter.get(
+  "/companies/cnpj/:cnpj",
+  inputValidateMidleware(companyFindByCnpjSchema),
+  companyController.findByCnpj
 );
 
 companyRouter.patch(
