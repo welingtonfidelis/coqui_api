@@ -86,16 +86,16 @@ class CompanyService {
     return null;
   }
 
-  async findByEmail(email: string): Promise<CompanyInterface | null> {
-    const selectedCompany = await companyRepository.findOneByEmail(email);
+  async findByEmail(email: string, id?: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByEmail(email, id);
 
     if (selectedCompany) return selectedCompany.toListInterface();
 
     return null;
   }
 
-  async findByCnpj(cnpj: string): Promise<CompanyInterface | null> {
-    const selectedCompany = await companyRepository.findOneByCnpj(cnpj);
+  async findByCnpj(cnpj: string, id?: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByCnpj(cnpj, id);
 
     if (selectedCompany) return selectedCompany.toListInterface();
 

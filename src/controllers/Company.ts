@@ -57,8 +57,9 @@ class CompanyController {
   @CatchError()
   async findByEmail(req: Request, res: Response) {
     const { email } = req.params;
+    const id = req.query.id as string;
 
-    const selectedCompany = await companyService.findByEmail(email);
+    const selectedCompany = await companyService.findByEmail(email, id);
     const responseHandled =
       responseClientService.successResponse(selectedCompany);
 
@@ -67,9 +68,12 @@ class CompanyController {
 
   @CatchError()
   async findByCnpj(req: Request, res: Response) {
+    console.log("\n\n ===>");
+    
     const cnpj = removeSpecialCharacters(req.params.cnpj);
+    const id = req.query.id as string;
 
-    const selectedCompany = await companyService.findByCnpj(cnpj);
+    const selectedCompany = await companyService.findByCnpj(cnpj, id);
     const responseHandled =
       responseClientService.successResponse(selectedCompany);
 

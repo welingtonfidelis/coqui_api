@@ -64,18 +64,22 @@ class CompanyRepository {
     return selectedCompany;
   }
 
-  async findOneByEmail(email: string) {
-    const selectedCompany = await CompanyModel.findOne({
-      where: { email },
-    });
+  async findOneByEmail(email: string, id?: string) {
+    const where:any = { email }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedCompany = await CompanyModel.findOne({ where });
 
     return selectedCompany;
   }
 
-  async findOneByCnpj(cnpj: string) {
-    const selectedCompany = await CompanyModel.findOne({
-      where: { cnpj },
-    });
+  async findOneByCnpj(cnpj: string, id?: string) {
+    const where:any = { cnpj }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedCompany = await CompanyModel.findOne({ where });
 
     return selectedCompany;
   }
