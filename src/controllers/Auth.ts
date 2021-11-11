@@ -16,6 +16,18 @@ class AuthController {
 
     return res.json(responseHandled);
   }
+
+  @CatchError()
+  async refreshToken(req: Request, res: Response) {
+    const { userId, companyId } = req;
+    const { password } = req.body;
+
+    const selectedUser = await authService.refreshToken(userId, companyId, password);
+
+    const responseHandled = responseClientService.successResponse(selectedUser);
+
+    return res.json(responseHandled);
+  }
 }
 
 export { AuthController };

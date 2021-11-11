@@ -126,7 +126,7 @@ class UserService {
   }
 
   async find(id: string, companyId: string): Promise<UserProfileInterface | null> {
-    const selectedUser = await userRepository.show(id, companyId);
+    const selectedUser = await userRepository.find(id, companyId);
 
     if (selectedUser) return selectedUser.toListInterface();
 
@@ -190,7 +190,7 @@ class UserService {
   }
 
   async updatePassword(data: UserUpdatePasswordInterface): Promise<boolean> {
-    const selectedUser = await userRepository.show(data.id, data.company_id);
+    const selectedUser = await userRepository.find(data.id, data.company_id);
 
     if (!selectedUser) return false;
 

@@ -51,12 +51,31 @@ class UserRepository {
     return listUsers;
   }
 
-  async show(id: string, company_id: string) {
+  async find(id: string, company_id: string) {
     const selectedUser = await UserModel.findOne({
       where: {
         id,
         company_id,
       },
+    });
+
+    return selectedUser;
+  }
+
+  async findWithCompany(id: string, company_id: string) {
+    const selectedUser = await UserModel.findOne({
+      where: {
+        id,
+        company_id,
+      },
+      include: [
+        {
+          model: CompanyModel,
+          as: "company",
+          required: true,
+          attributes: ["name", "active"],
+        },
+      ],
     });
 
     return selectedUser;
