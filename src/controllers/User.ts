@@ -65,22 +65,46 @@ class UserController {
   }
 
   @CatchError()
-  async show(req: Request, res: Response) {
+  async find(req: Request, res: Response) {
     const { id } = req.params;
     const { companyId } = req;
 
-    const selectedUser = await userService.show(id, companyId);
+    const selectedUser = await userService.find(id, companyId);
     const responseHandled = responseClientService.successResponse(selectedUser);
 
     return res.json(responseHandled);
   }
 
   @CatchError()
-  async showProfile(req: Request, res: Response) {
+  async findProfile(req: Request, res: Response) {
     const { userId, companyId } = req;
 
-    const updatedUser = await userService.show(userId, companyId);
+    const updatedUser = await userService.find(userId, companyId);
     const responseHandled = responseClientService.successResponse(updatedUser);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
+  async findByEmail(req: Request, res: Response) {
+    const { email } = req.params;
+    const id = req.query.id as string;
+
+    const selectedUser = await userService.findByEmail(email, id);
+    const responseHandled =
+      responseClientService.successResponse(selectedUser);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
+  async findByUser(req: Request, res: Response) {
+    const { user } = req.params;
+    const id = req.query.id as string;
+
+    const selectedUser = await userService.findByUser(user, id);
+    const responseHandled =
+      responseClientService.successResponse(selectedUser);
 
     return res.json(responseHandled);
   }

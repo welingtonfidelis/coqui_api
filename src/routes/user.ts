@@ -7,13 +7,15 @@ import { userDeleteSchema } from "../middlewares/InputValidate/schemas/user/dele
 import { userListSchema } from "../middlewares/InputValidate/schemas/user/list";
 import { userListForChatSchema } from "../middlewares/InputValidate/schemas/user/listForChat";
 import { userSaveSchema } from "../middlewares/InputValidate/schemas/user/save";
-import { userShowSchema } from "../middlewares/InputValidate/schemas/user/show";
-import { userShowProfileSchema } from "../middlewares/InputValidate/schemas/user/showProfile";
+import { userFindSchema } from "../middlewares/InputValidate/schemas/user/find";
+import { userFindProfileSchema } from "../middlewares/InputValidate/schemas/user/findProfile";
 import { userUpdateSchema } from "../middlewares/InputValidate/schemas/user/update";
 import { userUpdatePasswordSchema } from "../middlewares/InputValidate/schemas/user/updatePassword";
 import { userUpdateProfileSchema } from "../middlewares/InputValidate/schemas/user/updateProfile";
 import { userUpdateResetedPasswordSchema } from "../middlewares/InputValidate/schemas/user/updateResetedPassword";
 import { userUpdateStatusSchema } from "../middlewares/InputValidate/schemas/user/updateStatus";
+import { userFindByEmailSchema } from "../middlewares/InputValidate/schemas/user/findByEmail";
+import { userFindByUserSchema } from "../middlewares/InputValidate/schemas/user/findByUser";
 
 const userRouter = Router();
 const userController = new UserController();
@@ -26,8 +28,8 @@ userRouter.get(
 
 userRouter.get(
   "/users/profile",
-  inputValidateMidleware(userShowProfileSchema),
-  userController.showProfile
+  inputValidateMidleware(userFindProfileSchema),
+  userController.findProfile
 );
 
 userRouter.patch(
@@ -69,10 +71,28 @@ userRouter.get(
 userRouter.get(
   "/users/:id",
   [
-    inputValidateMidleware(userShowSchema),
+    inputValidateMidleware(userFindSchema),
     roleValidateMidleware(ROLES_ENUM.MANAGER),
   ],
-  userController.show
+  userController.find
+);
+
+userRouter.get(
+  "/users/email/:email",
+  [
+    inputValidateMidleware(userFindByEmailSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
+  userController.findByEmail
+);
+
+userRouter.get(
+  "/users/user/:user",
+  [
+    inputValidateMidleware(userFindByUserSchema),
+    roleValidateMidleware(ROLES_ENUM.MANAGER),
+  ],
+  userController.findByUser
 );
 
 userRouter.put(

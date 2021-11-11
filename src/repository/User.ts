@@ -80,6 +80,26 @@ class UserRepository {
     return selectedUser;
   }
 
+  async findOneByEmail(email: string, id?: string) {
+    const where:any = { email }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedUser = await UserModel.findOne({ where });
+
+    return selectedUser;
+  }
+
+  async findOneByUser(user: string, id?: string) {
+    const where:any = { user }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedUser = await UserModel.findOne({ where });
+
+    return selectedUser;
+  }
+
   async update(data: UserUpdateInterface) {
     const { id, company_id } = data;
 
