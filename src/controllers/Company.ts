@@ -8,6 +8,7 @@ import {
 } from "../entities/Company";
 import { CompanyService } from "../services/Company";
 import { ResponseClientService } from "../services/ResponseClient";
+import { removeSpecialCharacters } from "../util";
 
 const responseClientService = new ResponseClientService();
 const companyService = new CompanyService();
@@ -43,10 +44,36 @@ class CompanyController {
   }
 
   @CatchError()
-  async show(req: Request, res: Response) {
+  async find(req: Request, res: Response) {
     const { id } = req.params;
 
-    const selectedCompany = await companyService.show(id);
+    const selectedCompany = await companyService.find(id);
+    const responseHandled =
+      responseClientService.successResponse(selectedCompany);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
+  async findByEmail(req: Request, res: Response) {
+    const { email } = req.params;
+    const id = req.query.id as string;
+
+    const selectedCompany = await companyService.findByEmail(email, id);
+    const responseHandled =
+      responseClientService.successResponse(selectedCompany);
+
+    return res.json(responseHandled);
+  }
+
+  @CatchError()
+  async findByCnpj(req: Request, res: Response) {
+    console.log("\n\n ===>");
+    
+    const cnpj = removeSpecialCharacters(req.params.cnpj);
+    const id = req.query.id as string;
+
+    const selectedCompany = await companyService.findByCnpj(cnpj, id);
     const responseHandled =
       responseClientService.successResponse(selectedCompany);
 

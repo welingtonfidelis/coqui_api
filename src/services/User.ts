@@ -125,13 +125,45 @@ class UserService {
     return listUserHandled;
   }
 
-  async show(id: string, companyId: string): Promise<UserProfileInterface | null> {
+  async find(id: string, companyId: string): Promise<UserProfileInterface | null> {
     const selectedUser = await userRepository.show(id, companyId);
 
-    return selectedUser ? selectedUser.toProfileInterface() : null;
+    if (selectedUser) return selectedUser.toListInterface();
+
+    return null;
+  }
+
+  async findByEmail(email: string, id?: string): Promise<UserProfileInterface | null> {
+    const selectedUser = await userRepository.findOneByEmail(email, id);
+
+    if (selectedUser) return selectedUser.toListInterface();
+
+    return null;
+  }
+
+  async findByUser(user: string, id?: string): Promise<UserProfileInterface | null> {
+    const selectedUser = await userRepository.findOneByUser(user, id);
+
+    if (selectedUser) return selectedUser.toListInterface();
+
+    return null;
   }
 
   async update(data: UserUpdateInterface): Promise<boolean> {
+    const userAlreadyInUse = await userRepository.findOneByUser(
+      data.user,
+      data.id
+    );
+
+    if (userAlreadyInUse) throw new AppError("User already in use", 400);
+
+    const emailAlreadyInUse = await userRepository.findOneByEmail(
+      data.email,
+      data.id
+    );
+
+    if (emailAlreadyInUse) throw new AppError("Email already in use", 400);
+
     const [updatedUser] = await userRepository.update(data);
 
     return updatedUser > 0;

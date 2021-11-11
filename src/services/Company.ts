@@ -11,6 +11,7 @@ import { UserInterface } from "../entities/User";
 import { CompanyRepository } from "../repository/Company";
 import { UserRepository } from "../repository/User";
 import { AppError } from "../errors/AppError";
+import { ROLES_ENUM } from "../enums/role";
 
 const companyRepository = new CompanyRepository();
 const userRepository = new UserRepository();
@@ -43,7 +44,7 @@ class CompanyService {
       birth: new Date(),
       password: starterUserPassword,
       company_id: savedCompany.id,
-      role: "manager",
+      role: ROLES_ENUM.MANAGER,
       active: true,
     };
     const savedUser = await userRepository.save(starterCompanyUser);
@@ -61,7 +62,9 @@ class CompanyService {
     return savedCompanyHandled;
   }
 
-  async list(filter: CompanyFilterInterface): Promise<CompanyResponseClientInterface> {
+  async list(
+    filter: CompanyFilterInterface
+  ): Promise<CompanyResponseClientInterface> {
     const skip = filter.limit * (filter.page - 1);
     filter.page = skip;
 
@@ -75,12 +78,28 @@ class CompanyService {
     return listCompanyHandled;
   }
 
-  async show(
-    id: string,
-  ): Promise<CompanyInterface | null> {
-    const selectedUser = await companyRepository.show(id);
+  async find(id: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.find(id);
 
-    return selectedUser ? selectedUser : null;
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
+  }
+
+  async findByEmail(email: string, id?: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByEmail(email, id);
+
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
+  }
+
+  async findByCnpj(cnpj: string, id?: string): Promise<CompanyInterface | null> {
+    const selectedCompany = await companyRepository.findOneByCnpj(cnpj, id);
+
+    if (selectedCompany) return selectedCompany.toListInterface();
+
+    return null;
   }
 
   async changeStatus(id: string, status: boolean): Promise<boolean> {

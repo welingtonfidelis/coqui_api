@@ -44,7 +44,7 @@ class CompanyRepository {
     return listCompanies;
   }
 
-  async show(id: string) {
+  async find(id: string) {
     const selectedUser = await CompanyModel.findOne({
       where: {
         id,
@@ -60,6 +60,26 @@ class CompanyRepository {
         [Op.or]: [{ email }, { cnpj }],
       },
     });
+
+    return selectedCompany;
+  }
+
+  async findOneByEmail(email: string, id?: string) {
+    const where:any = { email }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedCompany = await CompanyModel.findOne({ where });
+
+    return selectedCompany;
+  }
+
+  async findOneByCnpj(cnpj: string, id?: string) {
+    const where:any = { cnpj }
+
+    if(id) where[Op.not] = { id }
+
+    const selectedCompany = await CompanyModel.findOne({ where });
 
     return selectedCompany;
   }

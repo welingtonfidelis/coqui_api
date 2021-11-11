@@ -6,9 +6,9 @@ module.exports = {
       {
         name: "Master",
         email: "master@email.com",
-        cnpj: "000.000.000/0000-01",
+        cnpj: "000000000000001",
         active: true,
-        logo: "",
+        logo: null,
         created_at: new Date(),
         updated_at: new Date(),
       },

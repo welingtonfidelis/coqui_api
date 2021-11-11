@@ -1,7 +1,7 @@
 import Joi from "joi";
 
-const userShowSchema = Joi.object({
+const userFindSchema = Joi.object({
   id: Joi.string().uuid().required(),
 });
 
-export { userShowSchema };
+export { userFindSchema };
