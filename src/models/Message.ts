@@ -1,7 +1,7 @@
-import { model, Schema, Model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { MessageInterface } from "../entities/Message";
 
-const MessageSchema: Schema = new Schema(
+const MessageSchema = new Schema<MessageInterface>(
   {
     company_id: { type: String, required: true },
     conversation_id: { type: String, required: true },
@@ -15,9 +15,6 @@ const MessageSchema: Schema = new Schema(
   }
 );
 
-const MessageModel: Model<MessageInterface> = model(
-  "Messages",
-  MessageSchema
-);
+const MessageModel = model<MessageInterface>("Messages", MessageSchema);
 
 export { MessageModel };

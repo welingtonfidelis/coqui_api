@@ -21,7 +21,7 @@ const inputValidateMidleware = (schema: Joi.Schema) => {
 
       next();
     } catch (error) {
-      const errorHandled = responseClientService.errorResponse(error);
+      const errorHandled = responseClientService.errorResponse(error as Error);
       return res.status(errorHandled.status_code).json(errorHandled);
     }
   };

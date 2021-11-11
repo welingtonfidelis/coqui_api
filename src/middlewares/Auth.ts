@@ -32,10 +32,16 @@ const authValidateMidleware = (
   try {
     verifiedToken = authService.verifyToken(token, jwtSecret);
   } catch (error) {
+    let errorMessage = "Failed in authentication";
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     const errorHandled = responseClientService.successResponse(
       {},
       401,
-      error.message || "Failed in authentication"
+      errorMessage 
     );
 
     return res.status(401).json(errorHandled);
@@ -71,10 +77,16 @@ const authValidateIgnoreExpirationMidleware = (
   try {
     verifiedToken = authService.verifyToken(token, jwtSecret, true);
   } catch (error) {
+    let errorMessage = "Failed in authentication";
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     const errorHandled = responseClientService.successResponse(
       {},
       401,
-      error.message || "Failed in authentication"
+      errorMessage 
     );
 
     return res.status(401).json(errorHandled);

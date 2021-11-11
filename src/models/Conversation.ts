@@ -1,7 +1,7 @@
-import { model, Schema, Model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { ConversationInterface } from "../entities/Conversation";
 
-const ConversationSchema: Schema = new Schema(
+const ConversationSchema = new Schema<ConversationInterface>(
   {
     company_id: { type: String, required: true },
     user_id_a: { type: String, required: true },
@@ -12,7 +12,7 @@ const ConversationSchema: Schema = new Schema(
   }
 );
 
-const ConversationModel: Model<ConversationInterface> = model(
+const ConversationModel = model<ConversationInterface>(
   "Conversations",
   ConversationSchema
 );
